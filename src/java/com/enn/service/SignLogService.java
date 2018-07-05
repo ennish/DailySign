@@ -1,0 +1,33 @@
+package com.enn.service;
+
+import com.enn.model.Result;
+import com.enn.model.SignUser;
+import com.enn.model.UserShareLog;
+
+/**
+ * @author hacker
+ */
+public interface SignLogService {
+
+    /**
+     *  获取用户当日签到进度
+     * @param user 签到用户
+     * @return 添加成功后返回主键
+     */
+    Result getUserShareList(SignUser user);
+
+    /**
+     * 用户签到分享
+     * @param user 根据用户openid或userId判断
+     * @param log 微信分享群唯一标识
+     * @return boolean
+     */
+    Result userShare(SignUser user, UserShareLog log);
+
+    /**
+     * 用户签到
+     * @param user 签到用户
+
+     */
+    Result userSign(SignUser user);
+}
