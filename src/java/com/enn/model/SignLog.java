@@ -18,11 +18,15 @@ public class SignLog {
 
     private String slSignTime;
 
+    private String slFinishTime;
+
     private Float slLocX;
 
     private Float slLocY;
 
     private Integer slBonus;
+
+    private Integer slStatus;
 
     public Integer getSlUserId() {
         return slUserId;
@@ -70,5 +74,21 @@ public class SignLog {
 
     public void setSlId(Integer slId) {
         this.slId = slId;
+    }
+
+    public Integer getSlStatus() {
+        return slStatus;
+    }
+
+    public void setSlStatus(Integer slStatus) {
+        this.slStatus = slStatus;
+    }
+
+    public String getSlFinishTime() {
+        return slFinishTime;
+    }
+
+    public void setSlFinishTime(String slFinishTime) {
+        this.slFinishTime = slFinishTime;
     }
 }

@@ -18,4 +18,6 @@ public interface SignUserMapper extends Mapper<SignUser> {
      */
     @Select("select count(1) from sign_user where user_id = #{userId} or open_id = #{openId}")
     int isUserExists(SignUser user);
+
+
 }

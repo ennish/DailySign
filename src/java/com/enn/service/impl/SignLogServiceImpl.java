@@ -1,6 +1,8 @@
 package com.enn.service.impl;
 
 import com.enn.DTO.ShareInfoDTO;
+import com.enn.DTO.SignLogDTO;
+import com.enn.mapper.BonusFlowMapper;
 import com.enn.mapper.SignLogMapper;
 import com.enn.mapper.UserShareMapper;
 import com.enn.model.Result;
@@ -25,6 +27,34 @@ public class SignLogServiceImpl implements SignLogService {
     private SignLogMapper signLogMapper;
     @Autowired
     private UserShareMapper userShareMapper;
+    @Autowired
+    private BonusFlowMapper bonusFlowMapper;
+
+    /**
+     * 获取用户签到信息
+     *
+     * @param user
+     * @return
+     */
+    @Override
+    public Result getUserSignInfo(SignUser user) {
+        Result result = new Result();
+        SignLog signLog = signLogMapper.getSignLogByUser(user);
+        if (signLog != null) {
+            //获取用户分享信息
+            SignLogDTO signLogDTO = new SignLogDTO(signLog.getSlStatus(), signLog.getSlBonus(), signLog.getSlSignTime(), signLog.getSlFinishTime());
+            List<UserShareLog> shareLogList = userShareMapper.getShareLogsByUser(user);
+            List<ShareInfoDTO> shareInfoDTOS = new ArrayList<>(shareLogList.size());
+            for (UserShareLog log : shareLogList
+                    ) {
+                ShareInfoDTO tempDTO = new ShareInfoDTO(log.getShareObjAvatarUrl(),log.getShareDate());
+                shareInfoDTOS.add(tempDTO);
+            }
+            signLogDTO.setShareInfos(shareInfoDTOS);
+            result.setBody(signLogDTO);
+        }
+        return result;
+    }
 
     /**
      * 获取用户当天分享进度
@@ -90,6 +120,7 @@ public class SignLogServiceImpl implements SignLogService {
      * @param user 签到用户
      * @return
      */
+    @Transactional
     @Override
     public Result userSign(SignUser user) {
         Result result = new Result();
@@ -99,15 +130,22 @@ public class SignLogServiceImpl implements SignLogService {
          */
         int bonus = 1;
         int times = 5;
-        if(userShareMapper.getShareNums(user) >= times){
-            if(signLogMapper.finishSign(user,bonus)<=0){
+        if (userShareMapper.getShareNums(user) >= times) {
+            if (signLogMapper.finishSign(user, bonus) <= 0) {
                 result.setCode(Result.STATUS_INVALID_REQUEST);
                 result.setMessage("签到失败");
-            };
+                return result;
+            }
+            /**
+             * TODO
+             * 奖励分配
+             * 记录流水
+             * 更改用户积分数
+             *
+             */
+
         }
-        result.setMessage(bonus+"");
+        result.setMessage(bonus + "");
         return result;
     }
-
-
 }

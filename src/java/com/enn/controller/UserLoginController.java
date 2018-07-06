@@ -33,7 +33,7 @@ public class UserLoginController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "login" )
+    @RequestMapping(value = "login"  )
     public String wxLogin(@RequestParam("code") String code) {
         Result r = new Result();
         SignUser user = new SignUser();
@@ -68,7 +68,7 @@ public class UserLoginController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "authentic" )
+    @RequestMapping(value = "authentic")
     public String authenticate(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
         Result r = new Result();
         if (!jedisUtil.exists(sessionId)) {

@@ -11,6 +11,8 @@ import com.enn.service.SignLogService;
 import com.enn.service.SignUserService;
 import com.enn.util.ConstantUtil;
 import com.enn.util.JedisUtil;
+import com.sun.corba.se.impl.orbutil.closure.Constant;
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +25,7 @@ import java.util.List;
  *
  * @author hacker
  */
+@ResponseBody
 @RestController
 @RequestMapping(value = "sign/")
 public class SignController {
@@ -32,14 +35,30 @@ public class SignController {
     private SignLogService signLogService;
 
     /**
-     * 获取签到分享进度
+     * 获取用户签到信息
+     * 返回用户签到状态及用户分享信息
+     */
+    @RequestMapping(value="info")
+    public String getSignInfo(@RequestParam(ConstantUtil.SESSION_ID_NAME)String sessionId){
+        Result r = new Result();
+        if(!jedisUtil.exists(sessionId)){
+            r.setCode(Result.STATUS_INVALID_REQUEST);
+            r.setMessage("session无效");
+            return r.toString();
+        }
+        SignUser user = new SignUser();
+        user = (SignUser) jedisUtil.get(sessionId);
+        r = signLogService.getUserSignInfo(user);
+        return r.toString();
+    }
+    /**
+     * 获取签到分享 进度
      *
      * @param sessionId sessionId
      * @return
      */
-    @ResponseBody
-    @RequestMapping(value = "info")
-    public String getSignInfo(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
+    @RequestMapping(value = "shareInfo")
+    public String getShareInfo(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
         Result r = new Result();
         if (!jedisUtil.exists(sessionId)) {
             r.setCode(Result.STATUS_INVALID_REQUEST);
@@ -56,12 +75,19 @@ public class SignController {
     /**
      * 签到分享
      */
-    @ResponseBody
-    @RequestMapping()
+    @RequestMapping("share")
     public String userShare(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId, @RequestParam("shareObj") String shareObj) {
         Result r = new Result();
         SignUser user = new SignUser();
-
+        if(!jedisUtil.exists(sessionId)){
+            r.setCode(Result.STATUS_INVALID_REQUEST);
+            r.setMessage("invalid sessionid");
+        }
+        UserShareLog log = new UserShareLog();
+        log.setShareObj(shareObj);
+        log.setShareObjAvatarUrl("");
+        log.setShareUserId(user.getUserId());
+        r = signLogService.userShare(user,log);
         return r.toString();
     }
 

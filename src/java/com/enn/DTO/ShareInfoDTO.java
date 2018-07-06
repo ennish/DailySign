@@ -11,6 +11,9 @@ public class ShareInfoDTO {
 
     private String shareDate;
 
+    public ShareInfoDTO() {
+    }
+
     public ShareInfoDTO(String avatalUrl, String shareDate) {
         this.avatalUrl = avatalUrl;
         this.shareDate = shareDate;

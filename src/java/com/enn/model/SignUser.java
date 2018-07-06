@@ -39,7 +39,10 @@ public class SignUser implements Serializable {
     private String unionId;
 
     private String phoneNo;
-
+    /**
+     * 积分账户
+     */
+    private int account;
     /**
      * 微信返回的sessionKey
      */
@@ -166,5 +169,13 @@ public class SignUser implements Serializable {
 
     public void setLastLoginTime(String lastLoginTime) {
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public int getAccount() {
+        return account;
+    }
+
+    public void setAccount(int account) {
+        this.account = account;
     }
 }
