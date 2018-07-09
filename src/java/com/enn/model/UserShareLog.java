@@ -1,14 +1,19 @@
 package com.enn.model;
 
+import tk.mybatis.mapper.annotation.NameStyle;
+import tk.mybatis.mapper.code.Style;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author hacker
  * 签到记录
  */
-@Table
-public class UserShareLog {
+@NameStyle(Style.camelhumpAndLowercase)
+@Table(name = "user_share_log")
+public class UserShareLog implements Serializable {
     @Id
     private int shareId;
 

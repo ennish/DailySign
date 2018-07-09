@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * @author hacker
  */
-public class Result<T> implements Serializable {
+public class Result<T>{
     /**
      *
      * 状态码

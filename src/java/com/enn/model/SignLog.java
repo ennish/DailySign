@@ -1,16 +1,17 @@
 package com.enn.model;
 
 import ch.qos.logback.core.net.SyslogOutputStream;
+import com.enn.DTO.SignLogDTO;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author hacker
  * 签到记录
  */
-@Table
-public class SignLog {
+public class SignLog implements Serializable {
     @Id
     private Integer slId;
 
@@ -28,6 +29,16 @@ public class SignLog {
 
     private Integer slStatus;
 
+    private Integer slProjectId;
+
+    public Integer getSlId() {
+        return slId;
+    }
+
+    public void setSlId(Integer slId) {
+        this.slId = slId;
+    }
+
     public Integer getSlUserId() {
         return slUserId;
     }
@@ -42,6 +53,14 @@ public class SignLog {
 
     public void setSlSignTime(String slSignTime) {
         this.slSignTime = slSignTime;
+    }
+
+    public String getSlFinishTime() {
+        return slFinishTime;
+    }
+
+    public void setSlFinishTime(String slFinishTime) {
+        this.slFinishTime = slFinishTime;
     }
 
     public Float getSlLocX() {
@@ -68,14 +87,6 @@ public class SignLog {
         this.slBonus = slBonus;
     }
 
-    public Integer getSlId() {
-        return slId;
-    }
-
-    public void setSlId(Integer slId) {
-        this.slId = slId;
-    }
-
     public Integer getSlStatus() {
         return slStatus;
     }
@@ -84,11 +95,12 @@ public class SignLog {
         this.slStatus = slStatus;
     }
 
-    public String getSlFinishTime() {
-        return slFinishTime;
+    public Integer getSlProjectId() {
+        return slProjectId;
     }
 
-    public void setSlFinishTime(String slFinishTime) {
-        this.slFinishTime = slFinishTime;
+    public void setSlProjectId(Integer slProjectId) {
+        this.slProjectId = slProjectId;
     }
+
 }

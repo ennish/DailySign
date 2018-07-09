@@ -12,7 +12,6 @@ import java.io.Serializable;
  * 签到用户
  */
 
-@Table(name = "sign_user")
 public class SignUser implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -21,7 +20,6 @@ public class SignUser implements Serializable {
     /**
      * 28 chars from weixin
      */
-    @Id
     private String openId;
     /**
      * 20 chars from weixin
@@ -57,6 +55,11 @@ public class SignUser implements Serializable {
     private String lastLoginTime;
 
     public SignUser() {
+    }
+
+    public SignUser(String openId, String nickName) {
+        this.openId = openId;
+        this.nickName = nickName;
     }
 
     public String getSessionId() {

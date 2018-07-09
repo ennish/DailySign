@@ -10,7 +10,7 @@ import tk.mybatis.mapper.common.Mapper;
 /**
  * @author hacker
  */
-public interface SignLogMapper extends Mapper<SignUser> {
+public interface SignLogMapper extends Mapper<SignLog> {
 
     /**
      * 获取用户今日签到信息
@@ -28,7 +28,7 @@ public interface SignLogMapper extends Mapper<SignUser> {
      * @param signLog
      */
     @Insert("insert into sign_log(sl_user_id,sl_project_id,sl_sign_time) value(#{slUserId},#{slProjectId},NOW())")
-    String addSignLog(SignLog signLog);
+    int addSignLog(SignLog signLog);
 
     /**
      * 用户签到

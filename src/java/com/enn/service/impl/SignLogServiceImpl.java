@@ -91,9 +91,9 @@ public class SignLogServiceImpl implements SignLogService {
     public Result userShare(SignUser user, UserShareLog log) {
         Result result = new Result();
         /**
-         * 目标群当天只能被同一用户分享一次
+         * 目标群当天只能被同一用户分享一次,每个用户每天分享5次
          */
-        if (userShareMapper.isObjShared(user, log.getShareObj()) > 0 || userShareMapper.isObjShared(user, log.getShareObj()) >= 5) {
+        if (userShareMapper.isObjShared(log) > 0 || userShareMapper.getShareNums(user) >= 5) {
             result.setCode(Result.STATUS_INVALID_REQUEST);
             result.setMessage("您已分享过该群,或您的分享次数已到达最大值");
             return result;
@@ -106,9 +106,13 @@ public class SignLogServiceImpl implements SignLogService {
             slog.setSlUserId(user.getUserId());
 //            slog.setSlLocX();
 //            slog.setSlLocY();
-            signLogMapper.addSignLog(slog);
+            if(signLogMapper.addSignLog(slog)<=0){
+                result.setCode(Result.STATUS_INVALID_REQUEST);
+                result.setMessage("分享失败");
+                return result;
+            };
         }
-        if (userShareMapper.userShare(user, log.getShareObj()) > 0) {
+        if (userShareMapper.userShare(log) > 0) {
             result.setMessage("分享成功");
         }
         return result;

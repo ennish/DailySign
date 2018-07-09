@@ -23,4 +23,9 @@ public interface SignUserService {
      * @return boolean
      */
     boolean isUserExists(SignUser user);
+
+    /**
+     * 根据openid查找userid
+     */
+    SignUser getSignUserByOpenId(SignUser user);
 }

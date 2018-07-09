@@ -33,6 +33,9 @@ public class SignController {
     private JedisUtil jedisUtil;
     @Autowired
     private SignLogService signLogService;
+    @Autowired
+    private WxMaService wxMaService;
+
 
     /**
      * 获取用户签到信息
@@ -55,6 +58,7 @@ public class SignController {
      * 获取签到分享 进度
      *
      * @param sessionId sessionId
+     *
      * @return
      */
     @RequestMapping(value = "shareInfo")
@@ -74,15 +78,18 @@ public class SignController {
 
     /**
      * 签到分享
+     *  @param shareObj 微信群唯一标识
+     *  @param wxres   微信群敏感数据
      */
     @RequestMapping("share")
-    public String userShare(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId, @RequestParam("shareObj") String shareObj) {
+    public String userShare(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId, @RequestParam("shareObj") String shareObj,@RequestParam("wxres") String wxres) {
         Result r = new Result();
         SignUser user = new SignUser();
         if(!jedisUtil.exists(sessionId)){
             r.setCode(Result.STATUS_INVALID_REQUEST);
             r.setMessage("invalid sessionid");
         }
+        user = (SignUser) jedisUtil.get(sessionId);
         UserShareLog log = new UserShareLog();
         log.setShareObj(shareObj);
         log.setShareObjAvatarUrl("");

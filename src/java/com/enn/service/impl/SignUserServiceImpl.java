@@ -1,10 +1,12 @@
 package com.enn.service.impl;
 
+import com.alibaba.druid.util.StringUtils;
 import com.enn.mapper.SignUserMapper;
 import com.enn.model.SignUser;
 import com.enn.service.SignUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
 /**
  * @author hacker
@@ -22,7 +24,7 @@ public class SignUserServiceImpl implements SignUserService {
      */
     @Override
     public Integer userRegister(SignUser user) {
-        Integer result = signUserMapper.insert(user);
+        Integer result = signUserMapper.insertSelective(user);
         if(result>0) {
             return result;
         }
@@ -39,4 +41,19 @@ public class SignUserServiceImpl implements SignUserService {
         return signUserMapper.isUserExists(user)>0;
     }
 
+
+    /**
+     * 根据openId查询
+     * @param user
+     * @return
+     */
+    @Override
+    public SignUser getSignUserByOpenId(SignUser user) {
+        if(StringUtils.isEmpty(user.getOpenId())){
+            return null;
+        }
+        Example example = new Example(SignUser.class);
+        example.createCriteria().andEqualTo("openId",user.getOpenId());
+        return signUserMapper.selectOneByExample(example);
+    }
 }

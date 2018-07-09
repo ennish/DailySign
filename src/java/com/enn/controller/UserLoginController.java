@@ -33,7 +33,7 @@ public class UserLoginController {
      * @return
      */
     @ResponseBody
-    @RequestMapping(value = "login"  )
+    @RequestMapping(value = "login")
     public String wxLogin(@RequestParam("code") String code) {
         Result r = new Result();
         SignUser user = new SignUser();
@@ -41,13 +41,15 @@ public class UserLoginController {
             WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
             user.setOpenId(session.getOpenid());
             user.setSessionKey(session.getSessionKey());
-            user.setSessionId(UUID.randomUUID().toString());
             /**
              * 数据库中无数据应加入
              */
             if (!signUserService.isUserExists(user)) {
                 signUserService.userRegister(user);
             }
+            user = signUserService.getSignUserByOpenId(user);
+            //放入缓存前为回话加入sessionIdh
+            user.setSessionId(UUID.randomUUID().toString());
             jedisUtil.set(user.getSessionId(), user, ConstantUtil.SESSION_EXPIRE_SECONDS);
             r.setBody(user.getSessionId());
         } catch (WxErrorException e) {

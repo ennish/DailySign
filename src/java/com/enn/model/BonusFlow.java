@@ -1,11 +1,15 @@
 package com.enn.model;
 
+import org.junit.Test;
+
 import javax.persistence.Id;
+import javax.persistence.Table;
+import java.io.Serializable;
 
 /**
  * @author tw
  */
-public class BonusFlow{
+public class BonusFlow implements Serializable {
 
     /**
      * 积分来源
