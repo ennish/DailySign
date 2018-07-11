@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50722
 File Encoding         : 65001
 
-Date: 2018-07-09 20:36:18
+Date: 2018-07-11 20:34:02
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -35,10 +35,12 @@ CREATE TABLE `bonus_flow` (
 DROP TABLE IF EXISTS `project`;
 CREATE TABLE `project` (
   `project_id` int(4) NOT NULL,
-  `project_name` varchar(255) NOT NULL,
-  `project_from` datetime NOT NULL,
-  `project_end` datetime NOT NULL,
+  `project_name` varchar(255) DEFAULT NULL,
+  `project_from` datetime DEFAULT NULL,
+  `project_end` datetime DEFAULT NULL,
   `project_comment` varchar(255) DEFAULT NULL,
+  `share_times_limit` int(4) DEFAULT NULL,
+  `bonusProject` int(7) DEFAULT NULL,
   PRIMARY KEY (`project_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -60,7 +62,7 @@ CREATE TABLE `sign_log` (
   PRIMARY KEY (`sl_id`),
   KEY `sign_log_ibfk_1` (`sl_user_id`),
   CONSTRAINT `sign_log_ibfk_1` FOREIGN KEY (`sl_user_id`) REFERENCES `sign_user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Table structure for sign_user
@@ -93,5 +95,55 @@ CREATE TABLE `user_share_log` (
   `share_date` date DEFAULT NULL COMMENT '分享日期',
   `share_obj` varchar(255) DEFAULT NULL COMMENT '分享目标，如有多个用#分割',
   `share_obj_avatar_url` varchar(255) DEFAULT NULL,
+  `share_obj_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`share_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Procedure structure for Debug
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `Debug`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `Debug`(IN `msg` text)
+BEGIN
+	-- 记录日志，其他procedure需要记录日志 CALL _debug(msg)
+	-- 清空日志时 调用另一个 PROCEDURE CALL _clearDebug()
+
+	DROP TABLE IF EXISTS _debug;
+
+	CREATE TABLE IF NOT EXISTS _debug(
+		`id` INT(20) NOT NULL auto_increment,
+		`msg` text DEFAULT NULL,
+    `create_at` timestamp default CURRENT_TIMESTAMP,
+		PRIMARY KEY(`id`)
+	);
+	INSERT INTO _debug(`msg`) 
+	VALUES(msg);
+	
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for user_sign
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `user_sign`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `user_sign`(IN `user_id` int,IN `project_id` int)
+BEGIN
+
+END
+;;
+DELIMITER ;
+
+-- ----------------------------
+-- Procedure structure for _clearDebug
+-- ----------------------------
+DROP PROCEDURE IF EXISTS `_clearDebug`;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `_clearDebug`()
+BEGIN
+	TRUNCATE TABLE _debug;
+END
+;;
+DELIMITER ;
