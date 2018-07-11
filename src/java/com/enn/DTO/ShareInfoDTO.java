@@ -7,15 +7,21 @@ package com.enn.DTO;
  */
 public class ShareInfoDTO {
 
+    /**
+     * 该信息暂时获取不到，用微信群名
+     */
     private String avatalUrl;
+
+    private String shareObj;
 
     private String shareDate;
 
     public ShareInfoDTO() {
     }
 
-    public ShareInfoDTO(String avatalUrl, String shareDate) {
+    public ShareInfoDTO(String avatalUrl, String shareObj, String shareDate) {
         this.avatalUrl = avatalUrl;
+        this.shareObj = shareObj;
         this.shareDate = shareDate;
     }
 
@@ -33,5 +39,13 @@ public class ShareInfoDTO {
 
     public void setShareDate(String shareDate) {
         this.shareDate = shareDate;
+    }
+
+    public String getShareObj() {
+        return shareObj;
+    }
+
+    public void setShareObj(String shareObj) {
+        this.shareObj = shareObj;
     }
 }

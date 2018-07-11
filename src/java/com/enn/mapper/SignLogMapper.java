@@ -1,7 +1,7 @@
 package com.enn.mapper;
 
-import com.enn.model.SignLog;
-import com.enn.model.SignUser;
+import com.enn.DTO.Result;
+import com.enn.model.*;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
@@ -31,10 +31,19 @@ public interface SignLogMapper extends Mapper<SignLog> {
     int addSignLog(SignLog signLog);
 
     /**
-     * 用户签到
+     * 用户完成签到
      * @param user
      * @return 签到成功返回值大于0
+     * @Update("update sign_log set sl_status = #{project.projectId} and sl_bonus = #{project.bonusProject} and sl_finish_time = NOW()")
      */
-    @Update("update sign_log set sl_status = 1 and sl_bonus = #{bonus}")
-    int finishSign(SignUser user,int bonus);
+    @Select("select user_sign(#{user.userId},#{project.projectId})")
+    Result finishSign(SignUser user, Project project);
+
+    /**
+     *  用户 分享任务完成 更改状态
+     * @param log
+     * @return
+     */
+    @Update("update sign_log set sl_status = 1 where sl_user_id = #{shareUserId} and TO_DAYS(sl_sign_time) = TO_DAYS(NOW())")
+    int updateUserSign(UserShareLog log);
 }

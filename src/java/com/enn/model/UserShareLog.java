@@ -11,7 +11,6 @@ import java.io.Serializable;
  * @author hacker
  * 签到记录
  */
-@NameStyle(Style.camelhumpAndLowercase)
 @Table(name = "user_share_log")
 public class UserShareLog implements Serializable {
     @Id
@@ -26,6 +25,8 @@ public class UserShareLog implements Serializable {
     private String shareObj;
 
     private String shareObjAvatarUrl;
+
+    private String shareObjName;
 
     public int getShareId() {
         return shareId;
@@ -73,5 +74,13 @@ public class UserShareLog implements Serializable {
 
     public void setShareObjAvatarUrl(String shareObjAvatarUrl) {
         this.shareObjAvatarUrl = shareObjAvatarUrl;
+    }
+
+    public String getShareObjName() {
+        return shareObjName;
+    }
+
+    public void setShareObjName(String shareObjName) {
+        this.shareObjName = shareObjName;
     }
 }

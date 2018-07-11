@@ -5,6 +5,7 @@ import com.enn.DTO.SignLogDTO;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.io.Serializable;
 
 /**
@@ -12,6 +13,9 @@ import java.io.Serializable;
  * 签到记录
  */
 public class SignLog implements Serializable {
+
+
+
     @Id
     private Integer slId;
 

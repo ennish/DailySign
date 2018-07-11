@@ -1,6 +1,7 @@
 package com.enn.service;
 
-import com.enn.model.Result;
+import com.enn.model.Project;
+import com.enn.DTO.Result;
 import com.enn.model.SignUser;
 import com.enn.model.UserShareLog;
 
@@ -22,16 +23,15 @@ public interface SignLogService {
 
     /**
      * 用户签到分享
-     * @param user 根据用户openid或userId判断
      * @param log 微信分享群唯一标识
      * @return boolean
      */
-    Result userShare(SignUser user, UserShareLog log);
+    Result userShare(UserShareLog log,String data,String iv,SignUser user);
 
     /**
      * 用户签到
      * @param user 签到用户
 
      */
-    Result userSign(SignUser user);
+    Result userSign(SignUser user, Project project);
 }

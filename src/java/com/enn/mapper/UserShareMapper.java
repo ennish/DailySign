@@ -40,11 +40,11 @@ public interface UserShareMapper extends Mapper<UserShareLog> {
 
     /**
      * 判断用户签到分享次数
-     * @param user
+     * @param userId
      * @return
      */
     @Select("select IFNULL(count(*),0) from user_share_log where share_user_id = #{userId}  and TO_DAYS(NOW()) = TO_DAYS(share_date)")
-    int getShareNums(SignUser user);
+    int getShareNums(int userId);
 
 }
 

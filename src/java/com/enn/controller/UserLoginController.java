@@ -2,7 +2,7 @@ package com.enn.controller;
 
 import cn.binarywang.wx.miniapp.api.WxMaService;
 import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
-import com.enn.model.Result;
+import com.enn.DTO.Result;
 import com.enn.model.SignUser;
 import com.enn.service.SignUserService;
 import com.enn.util.ConstantUtil;
@@ -40,7 +40,6 @@ public class UserLoginController {
         try {
             WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
             user.setOpenId(session.getOpenid());
-            user.setSessionKey(session.getSessionKey());
             /**
              * 数据库中无数据应加入
              */
@@ -49,6 +48,7 @@ public class UserLoginController {
             }
             user = signUserService.getSignUserByOpenId(user);
             //放入缓存前为回话加入sessionIdh
+            user.setSessionKey(session.getSessionKey());
             user.setSessionId(UUID.randomUUID().toString());
             jedisUtil.set(user.getSessionId(), user, ConstantUtil.SESSION_EXPIRE_SECONDS);
             r.setBody(user.getSessionId());

@@ -1,4 +1,4 @@
-package com.enn.model;
+package com.enn.DTO;
 
 import com.alibaba.fastjson.JSON;
 import java.io.Serializable;

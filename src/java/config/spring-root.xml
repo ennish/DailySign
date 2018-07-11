@@ -14,7 +14,7 @@
     <!--scan -->
     <context:component-scan base-package="com.enn.controller"/>
     <context:component-scan base-package="com.enn.service"/>
-
+    <context:component-scan base-package="com.enn.mapper"/>
     <mvc:annotation-driven></mvc:annotation-driven>
     <!--映射静态资源-->
     <mvc:default-servlet-handler/>

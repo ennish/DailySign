@@ -1,9 +1,6 @@
 package com.enn.service;
 
 import com.enn.model.SignUser;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import javax.xml.ws.Service;
 
 /**
  * @author hacker

@@ -1,8 +1,5 @@
 package com.enn.util;
 
-import ch.qos.logback.core.net.SyslogOutputStream;
-
-import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -22,13 +19,5 @@ public class ConstantUtil {
      * session过期时间(秒)（默认一个小时）
      */
     public static final Long SESSION_EXPIRE_SECONDS = 60*60L;
-    /**
-     *
-     */
-    public static final String a ="";
 
-    public static void main(String[] args){
-        System.out.println(new Date());
-        System.out.println(Instant.now());
-    }
 }

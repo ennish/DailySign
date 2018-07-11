@@ -25,12 +25,16 @@ public class UserShareTest {
         user.setUserId(55);
         List<UserShareLog> list = userShareMapper.getShareLogsByUser(user);
 //        Assert.assertEquals(1,list.size());
-
         UserShareLog log = new UserShareLog();
         log.setShareUserId(67);
         log.setShareObj("80ed39b1-affc-43b4-a4a4-96db898cac37");
-
         Assert.assertEquals(1,userShareMapper.isObjShared(log));
     }
 
+    @Test
+    public void testNum(){
+
+        int num = userShareMapper.getShareNums(67);
+        Assert.assertEquals(5,num);
+    }
 }
