@@ -1,6 +1,5 @@
 package com.enn.controller;
 
-import cn.binarywang.wx.miniapp.api.WxMaService;
 import com.enn.DTO.Result;
 import com.enn.model.*;
 import com.enn.service.ProjectService;
@@ -23,8 +22,6 @@ public class SignController {
     private JedisUtil jedisUtil;
     @Autowired
     private SignLogService signLogService;
-    @Autowired
-    private WxMaService wxMaService;
     @Autowired
     private ProjectService projectService;
 

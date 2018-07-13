@@ -1,13 +1,12 @@
 package com.enn.controller;
 
-import cn.binarywang.wx.miniapp.api.WxMaService;
-import cn.binarywang.wx.miniapp.bean.WxMaJscode2SessionResult;
 import com.enn.DTO.Result;
+import com.enn.DTO.WxSessionData;
 import com.enn.model.SignUser;
 import com.enn.service.SignUserService;
+import com.enn.service.WxExtraService;
 import com.enn.util.ConstantUtil;
 import com.enn.util.JedisUtil;
-import me.chanjar.weixin.common.error.WxErrorException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,10 +22,13 @@ public class UserLoginController {
     private SignUserService signUserService;
     @Autowired
     private JedisUtil jedisUtil;
+//    @Autowired
+//    private WxMaService wxMaService;
     @Autowired
-    private WxMaService wxMaService;
+    private WxExtraService wxExtraService;
 
     /**
+     *
      * 微信登录
      *
      * @param code
@@ -38,7 +40,12 @@ public class UserLoginController {
         Result r = new Result();
         SignUser user = new SignUser();
         try {
-            WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
+//            WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
+            WxSessionData session = wxExtraService.requestData(code);
+            if(session==null||session.getOpenid()==null){
+                r.setCode(Result.STATUS_INVALID_REQUEST);
+                return r.toString();
+            }
             user.setOpenId(session.getOpenid());
             /**
              * 数据库中无数据应加入
@@ -52,7 +59,7 @@ public class UserLoginController {
             user.setSessionId(UUID.randomUUID().toString());
             jedisUtil.set(user.getSessionId(), user, ConstantUtil.SESSION_EXPIRE_SECONDS);
             r.setBody(user.getSessionId());
-        } catch (WxErrorException e) {
+        } catch ( Exception e) {
             /**
              * 登录失败
              */

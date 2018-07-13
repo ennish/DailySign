@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:config/spring-root.xml"})
+@ContextConfiguration(locations = {"classpath:config/spring-servlet.xml"})
 public class UserShareTest {
 
     @Autowired
