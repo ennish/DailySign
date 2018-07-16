@@ -15,6 +15,7 @@ import java.util.UUID;
 /**
  * @author hacker
  */
+@ResponseBody
 @RestController
 @RequestMapping(value = "user/")
 public class UserLoginController {
@@ -22,8 +23,6 @@ public class UserLoginController {
     private SignUserService signUserService;
     @Autowired
     private JedisUtil jedisUtil;
-//    @Autowired
-//    private WxMaService wxMaService;
     @Autowired
     private WxExtraService wxExtraService;
 
@@ -34,13 +33,11 @@ public class UserLoginController {
      * @param code
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "login")
     public String wxLogin(@RequestParam("code") String code) {
         Result r = new Result();
         SignUser user = new SignUser();
         try {
-//            WxMaJscode2SessionResult session = wxMaService.getUserService().getSessionInfo(code);
             WxSessionData session = wxExtraService.requestData(code);
             if(session==null||session.getOpenid()==null){
                 r.setCode(Result.STATUS_INVALID_REQUEST);
@@ -51,7 +48,7 @@ public class UserLoginController {
              * 数据库中无数据应加入
              */
             if (!signUserService.isUserExists(user)) {
-                signUserService.userRegister(user);
+                signUserService.addUser(user);
             }
             user = signUserService.getSignUserByOpenId(user);
             //放入缓存前为回话加入sessionIdh
@@ -76,7 +73,6 @@ public class UserLoginController {
      * @param sessionId
      * @return
      */
-    @ResponseBody
     @RequestMapping(value = "authentic")
     public String authenticate(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
         Result r = new Result();

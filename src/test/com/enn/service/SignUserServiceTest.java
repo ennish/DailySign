@@ -23,7 +23,7 @@ public class SignUserServiceTest {
 
         SignUser user = new SignUser();
         user.setOpenId("123345tw");
-        signUserService.userRegister(user);
+        signUserService.addUser(user);
         user = signUserService.getSignUserByOpenId(user);
         Assert.assertEquals("123345tw",user.getSessionId());
     }

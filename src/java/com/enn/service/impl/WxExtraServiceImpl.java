@@ -8,6 +8,7 @@ import com.enn.util.EncryptUtil;
 import com.enn.util.http.apache.ClientExecutor;
 import com.google.common.base.Joiner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -16,6 +17,7 @@ import java.util.Map;
 /**
  * @author hacker
  */
+@Service
 public class WxExtraServiceImpl implements WxExtraService {
     @Autowired
     private WxConfig wxConfig;

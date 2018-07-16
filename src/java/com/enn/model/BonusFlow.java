@@ -21,6 +21,7 @@ public class BonusFlow implements Serializable {
      * 累计签到奖励
      */
     public static final String ACC_SIGN = "ACC_SIGN";
+
     @Id
     private int bonusFlowId;
 

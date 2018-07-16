@@ -12,7 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"classpath:config/spring-servlet.xml"})
+@ContextConfiguration(locations = {"classpath:config/spring-servlet.xml","classpath:applicationContext.xml"})
 public class SignUserTest {
 
     @Autowired

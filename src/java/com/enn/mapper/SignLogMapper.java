@@ -32,6 +32,7 @@ public interface SignLogMapper extends Mapper<SignLog> {
 
     /**
      * 用户完成签到
+     * 奖励分配
      * @param user
      * @return 签到成功返回值大于0
      * @Update("update sign_log set sl_status = #{project.projectId} and sl_bonus = #{project.bonusProject} and sl_finish_time = NOW()")

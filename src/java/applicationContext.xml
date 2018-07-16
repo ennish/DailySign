@@ -10,14 +10,28 @@
      http://www.springframework.org/schema/context/spring-context-4.0.xsd
      http://www.springframework.org/schema/tx
      http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
-
-    <!-- 增加properties文件 -->
+    <!--多属性文件时有以下有以下两种方式-->
+    <!--1. 在每个context 设置 ignore-unresolvable="true" -->
     <!--<context:property-placeholder-->
             <!--location="classpath:config/jdbc.properties"/>-->
     <!--<context:property-placeholder-->
             <!--location="classpath:config/redis.properties"/>-->
-    <context:property-placeholder
-            location="classpath:config/WxMiniApp.properties"  ignore-unresolvable="true"/>
+    <!--<context:property-placeholder-->
+            <!--location="classpath:config/WxMiniApp.properties"  ignore-unresolvable="true"/>-->
+    <!--2. locations属性 引入属性文件 -->
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <!--<property name="systemPropertiesModeName" value="SYSTEM_PROPERTIES_MODE_OVERRIDE" />-->
+        <property name="ignoreResourceNotFound" value="true" />
+        <property name="locations">
+            <list>
+                <value>classpath:config/WxMiniApp.properties</value>
+                <value>classpath:config/jdbc.properties</value>
+                <value>classpath:config/redis.properties</value>
+            </list>
+        </property>
+    </bean>
+    <!--wx-java-miniapp 工具库，jdk1.7+ -->
     <!--weixin miniapp-->
     <!--<bean id="wxMaConfig" class="cn.binarywang.wx.miniapp.config.WxMaInMemoryConfig" >-->
     <!--<property name="appid" value="${wechat.miniapp.appid}"/>-->
@@ -29,9 +43,6 @@
     <!--<bean id="wxMaService" class="cn.binarywang.wx.miniapp.api.impl.WxMaServiceImpl">-->
     <!--<property name="wxMaConfig" ref="wxMaConfig"/>-->
     <!--</bean>-->
-    <context:component-scan base-package="com.enn.service"/>
-    <context:component-scan base-package="com.enn.mapper"/>
-
     <bean id="wxConfig" class="com.enn.DTO.InternalWxConfig">
         <property name="appid" value="${wechat.miniapp.appid}"/>
         <property name="aesKey" value="${wechat.miniapp.aesKey}"/>
@@ -45,40 +56,37 @@
 
     <!-- 导入redis的配置文件 -->
     <import resource="config/redis-config.xml"/>
-
     <import resource="config/datasource.xml"/>
+
     <!-- 自动扫描(自动注入) -->
     <!--<context:component-scan base-package="com.enn.service"/>-->
 
     <!-- 定义事务管理器 -->
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource">
-            <ref bean="dataSource"/>
-        </property>
-    </bean>
+    <!--<bean id="transactionManager"-->
+          <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--</bean>-->
 
     <!-- 开启事务注解驱动 -->
     <tx:annotation-driven/>
-    <!-- 配置事务特性 ，配置add、delete和update开始的方法，事务传播特性为required -->
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="save*" propagation="REQUIRED" rollback-for="Exception"/>
-            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
-            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
-            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
-            <tx:method name="init*" propagation="REQUIRED" rollback-for="Exception"/>
-            <tx:method name="add*" propagation="REQUIRED"/>
-            <tx:method name="*" read-only="true"/>
-        </tx:attributes>
-    </tx:advice>
+    <!-- 配置事务特性 ，配置add、delete和update开始的方法(切面)，事务传播特性为required -->
+    <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
+        <!--<tx:attributes>-->
+            <!--<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>-->
+            <!--<tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>-->
+            <!--<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>-->
+            <!--<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>-->
+            <!--<tx:method name="init*" propagation="REQUIRED" rollback-for="Exception"/>-->
+            <!--<tx:method name="add*" propagation="REQUIRED"/>-->
+            <!--<tx:method name="*" read-only="true"/>-->
+        <!--</tx:attributes>-->
+    <!--</tx:advice>-->
 
     <!-- 配置那些类的方法进行事务管理 -->
-    <aop:config>
-        <aop:pointcut id="allManagerMethod" expression="execution (* com.enn.service..*.*(..))"/>
-        <!--<aop:pointcut id="allManagerMethod" expression="execution (* com.qdhtxx.service.*.impl.*.*(..))" />-->
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod"/>
-    </aop:config>
+    <!--<aop:config>-->
+        <!--<aop:pointcut id="allManagerMethod" expression="execution (* com.enn.service..*.*(..))"/>-->
+        <!--<aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod"/>-->
+    <!--</aop:config>-->
 
     <!--mybatis-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
@@ -100,8 +108,6 @@
             </value>
         </property>
     </bean>
-
-
 
     <bean class="org.springframework.http.converter.StringHttpMessageConverter">
         <property name="supportedMediaTypes" value="text/plain;charset=UTF-8"/>

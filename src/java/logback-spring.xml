@@ -12,7 +12,7 @@
     <appender name="FILE_ALL" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <File>logs/suws-info.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/suws-info.log.%d{yyyy-MM-dd}-%i.log</FileNamePattern>
+            <FileNamePattern>logs/mp_info.log.%d{yyyy-MM-dd}-%i.log</FileNamePattern>
             <MaxHistory>15</MaxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>32MB</maxFileSize>
@@ -33,7 +33,7 @@
         </filter>
         <File>logs/suws-error.log</File>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <FileNamePattern>logs/suws-error.log.%d{yyyy-MM-dd}-%i.log</FileNamePattern>
+            <FileNamePattern>logs/mp-error.log.%d{yyyy-MM-dd}-%i.log</FileNamePattern>
             <MaxHistory>15</MaxHistory>
             <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
                 <maxFileSize>32MB</maxFileSize>

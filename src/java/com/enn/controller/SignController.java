@@ -82,7 +82,7 @@ public class SignController {
         user = (SignUser) jedisUtil.get(sessionId);
         UserShareLog log = new UserShareLog();
         log.setShareUserId(user.getUserId());
-        r = signLogService.userShare(log, data, iv, user);
+        r = signLogService.addUserShare(log, data, iv, user);
         return r.toString();
     }
 
@@ -103,8 +103,19 @@ public class SignController {
         }
         user = (SignUser) jedisUtil.get(sessionId);
         Project project = projectService.getProjectActive();
-        r = signLogService.userSign(user, project);
+        r = signLogService.addUserSign(user, project);
         return r.toString();
     }
 
+    /**
+     * 获取签到任务列表
+     *
+     *
+     */
+
+    /**
+     * 领取签到任务奖励
+     *
+     *
+     */
 }

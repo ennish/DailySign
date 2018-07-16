@@ -8,9 +8,11 @@
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-4.0.xsd
 		  http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <mvc:annotation-driven></mvc:annotation-driven>
+
     <!--scan -->
     <context:component-scan base-package="com.enn.controller"/>
-    <mvc:annotation-driven></mvc:annotation-driven>
+    <context:component-scan base-package="com.enn.service"/>
     <!--映射静态资源-->
     <mvc:default-servlet-handler/>
 

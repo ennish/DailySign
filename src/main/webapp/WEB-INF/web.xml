@@ -1,24 +1,32 @@
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee
-                      http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
-         version="3.1" metadata-complete="true">
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+         version="2.5">
     <display-name>DailySign</display-name>
+
     <!--上下文配置-->
     <listener>
         <listener-class>
             org.springframework.web.context.ContextLoaderListener
         </listener-class>
     </listener>
-    <!--需要在applicationContext.xml中引入的bean都需要被contextConfigLocation读入-->
+
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:config/*.xml</param-value>
+        <param-value>classpath:applicationContext.xml</param-value>
     </context-param>
-
+    <!--jboss SpringMVC supporting-->
+    <!--<context-param>-->
+        <!--<param-name>contextClass</param-name>-->
+        <!--<param-value>-->
+            <!--org.jboss.spring.vfs.context.VFSXmlWebApplicationContext-->
+        <!--</param-value>-->
+    <!--</context-param>-->
     <!--logback日志-->
     <context-param>
         <param-name>logbackConfigLocation</param-name>
-        <param-value>classpath:conf/logback.xml</param-value>
+        <param-value>classpath:logback.xml</param-value>
     </context-param>
 
     <!--springMvc 上下文配置-->
@@ -27,8 +35,15 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath*:config/spring-servlet.xml</param-value>
+            <param-value>classpath:config/spring-servlet.xml</param-value>
         </init-param>
+        <!--jboss SpringMVC supporting-->
+        <!--<init-param>-->
+            <!--<param-name>contextClass</param-name>-->
+            <!--<param-value>-->
+                <!--org.jboss.spring.vfs.context.VFSXmlWebApplicationContext-->
+            <!--</param-value>-->
+        <!--</init-param>-->
         <!--不加也一样？？？-->
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -41,7 +56,6 @@
     <filter>
         <filter-name>springCharacterEncodingFilter</filter-name>
         <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
-        <async-supported>true</async-supported>
         <init-param>
             <param-name>encoding</param-name>
             <param-value>UTF-8</param-value>

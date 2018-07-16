@@ -26,12 +26,12 @@ public interface SignLogService {
      * @param log 微信分享群唯一标识
      * @return boolean
      */
-    Result userShare(UserShareLog log,String data,String iv,SignUser user);
+    Result addUserShare(UserShareLog log,String data,String iv,SignUser user);
 
     /**
      * 用户签到
      * @param user 签到用户
 
      */
-    Result userSign(SignUser user, Project project);
+    Result addUserSign(SignUser user, Project project);
 }

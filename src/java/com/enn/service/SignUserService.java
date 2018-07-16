@@ -12,7 +12,7 @@ public interface SignUserService {
      * @param user
      * @return 添加成功后返回主键
      */
-    Integer userRegister(SignUser user);
+    Integer addUser(SignUser user);
 
     /**
      * 根据id或openid判断用户是否存在

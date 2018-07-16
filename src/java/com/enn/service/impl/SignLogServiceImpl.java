@@ -92,7 +92,7 @@ public class SignLogServiceImpl implements SignLogService {
      */
     @Transactional
     @Override
-    public Result userShare(UserShareLog log, String data, String iv, SignUser user) {
+    public Result addUserShare(UserShareLog log, String data, String iv, SignUser user) {
         Result result = new Result();
         /**
          * 解密res
@@ -162,19 +162,18 @@ public class SignLogServiceImpl implements SignLogService {
      * @param user 签到用户
      * @return
      */
-    @Transactional
     @Override
-    public Result userSign(SignUser user, Project project) {
+    public Result addUserSign(SignUser user, Project project) {
         Result result = new Result();
         /**
          * TODO
+         * 更改状态
          * 奖励分配
          * 记录流水
          * 更改用户积分数
          *
          */
         result = signLogMapper.finishSign(user, project);
-
         return result;
     }
 }

@@ -23,7 +23,7 @@ public class SignUserServiceImpl implements SignUserService {
      * @return
      */
     @Override
-    public Integer userRegister(SignUser user) {
+    public Integer addUser(SignUser user) {
         Integer result = signUserMapper.insertSelective(user);
         if(result>0) {
             return result;
