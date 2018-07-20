@@ -27,8 +27,9 @@ public class UserLoginController {
     private WxExtraService wxExtraService;
 
     /**
-     *
      * 微信登录
+     * 登录前应用checkSession检验，session的有效性
+     *
      *
      * @param code
      * @return
@@ -39,7 +40,7 @@ public class UserLoginController {
         SignUser user = new SignUser();
         try {
             WxSessionData session = wxExtraService.requestData(code);
-            if(session==null||session.getOpenid()==null){
+            if (session == null || session.getOpenid() == null) {
                 r.setCode(Result.STATUS_INVALID_REQUEST);
                 return r.toString();
             }
@@ -50,13 +51,13 @@ public class UserLoginController {
             if (!signUserService.isUserExists(user)) {
                 signUserService.addUser(user);
             }
-            user = signUserService.getSignUserByOpenId(user);
-            //放入缓存前为回话加入sessionIdh
-            user.setSessionKey(session.getSessionKey());
-            user.setSessionId(UUID.randomUUID().toString());
-            jedisUtil.set(user.getSessionId(), user, ConstantUtil.SESSION_EXPIRE_SECONDS);
-            r.setBody(user.getSessionId());
-        } catch ( Exception e) {
+            SignUser user2 = signUserService.getSignUserByOpenId(user.getOpenId());
+            //放入缓存前为会话加入sessionId
+            user2.setSessionKey(session.getSessionKey());
+            user2.setSessionId(UUID.randomUUID().toString());
+            jedisUtil.set(user2.getSessionId(), user2, ConstantUtil.SESSION_EXPIRE_SECONDS);
+            r.setBody(user2.getSessionId());
+        } catch (Exception e) {
             /**
              * 登录失败
              */
@@ -81,6 +82,25 @@ public class UserLoginController {
             r.setMessage("invalid sessionid");
             return r.toString();
         }
+        return r.toString();
+    }
+
+    /**
+     * 获取个人相关信息
+     * 当前积分 etc
+     */
+    @RequestMapping(value = "detail ")
+    public String getUserInfo(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
+        Result r = new Result();
+        SignUser user = new SignUser();
+        if (!jedisUtil.exists(sessionId)) {
+            r.setCode(Result.STATUS_INVALID_REQUEST);
+            r.setMessage("invalid sessionid");
+            return r.toString();
+        }
+        user = (SignUser) jedisUtil.get(sessionId);
+        user = signUserService.getUserAbstract(user.getOpenId());
+        r.setBody(user);
         return r.toString();
     }
 }

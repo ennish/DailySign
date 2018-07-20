@@ -223,11 +223,11 @@
         </dependency>
 
         <!--jboss springMVC supporting-->
-        <dependency>
-            <groupId>org.jboss.snowdrop</groupId>
-            <artifactId>snowdrop-vfs</artifactId>
-            <version>4.0.0.Final</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.jboss.snowdrop</groupId>-->
+            <!--<artifactId>snowdrop-vfs</artifactId>-->
+            <!--<version>4.0.0.Final</version>-->
+        <!--</dependency>-->
 
     </dependencies>
     <repositories>

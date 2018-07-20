@@ -11,11 +11,15 @@ public class SignLogDTO {
     /**
      * 0未签到 1已签到
      */
-    private int signStatus;
+    private Integer signStatus;
     /**
-     * 本次签到获得的积分
+     * 当日签到获得的积分
      */
-    private int signBonus;
+    private Integer signBonus;
+    /**
+     * 用户当日总积分
+     */
+    private Integer totalBonus;
     /**
      * 开始签到任务时间
      */
@@ -30,26 +34,26 @@ public class SignLogDTO {
     public SignLogDTO() {
     }
 
-    public SignLogDTO(int signStatus, int signBonus, String signTime, String finishTime) {
+    public SignLogDTO(Integer signStatus, Integer signBonus, String signTime, String finishTime) {
         this.signStatus = signStatus;
         this.signBonus = signBonus;
         this.signTime = signTime;
         this.finishTime = finishTime;
     }
 
-    public int getSignStatus() {
+    public Integer getSignStatus() {
         return signStatus;
     }
 
-    public void setSignStatus(int signStatus) {
+    public void setSignStatus(Integer signStatus) {
         this.signStatus = signStatus;
     }
 
-    public int getSignBonus() {
+    public Integer getSignBonus() {
         return signBonus;
     }
 
-    public void setSignBonus(int signBonus) {
+    public void setSignBonus(Integer signBonus) {
         this.signBonus = signBonus;
     }
 
@@ -76,4 +80,13 @@ public class SignLogDTO {
     public void setShareInfos(List<ShareInfoDTO> shareInfos) {
         this.shareInfos = shareInfos;
     }
+
+    public Integer getTotalBonus() {
+        return totalBonus;
+    }
+
+    public void setTotalBonus(Integer totalBonus) {
+        this.totalBonus = totalBonus;
+    }
+
 }

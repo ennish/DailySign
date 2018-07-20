@@ -9,6 +9,7 @@ public interface SignUserService {
 
     /**
      * 签到用户注册
+     *
      * @param user
      * @return 添加成功后返回主键
      */
@@ -16,6 +17,7 @@ public interface SignUserService {
 
     /**
      * 根据id或openid判断用户是否存在
+     *
      * @param user 根据用户openid或userId判断
      * @return boolean
      */
@@ -23,6 +25,14 @@ public interface SignUserService {
 
     /**
      * 根据openid查找userid
+     *
+     * @param openId 不能为null
+     * @return
      */
-    SignUser getSignUserByOpenId(SignUser user);
+    SignUser getSignUserByOpenId(String openId);
+
+    /**
+     * 获取用户简略信息
+     */
+    SignUser getUserAbstract(String openId);
 }

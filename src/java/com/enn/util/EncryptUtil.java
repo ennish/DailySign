@@ -17,6 +17,12 @@ import java.util.Map;
  */
 public class EncryptUtil {
     /**
+     * 结果状态
+     */
+    public static final String CODE_SUCCESS = "1";
+    public static final String CODE_FAIL = "2";
+
+    /**
      * 将message加密以md5方式加密，并以base64形式转码
      *
      * @param message
@@ -56,11 +62,11 @@ public class EncryptUtil {
                     Base64.decodeBase64(iv));
             if(null != resultByte && resultByte.length > 0){
                 String userInfo = new String(resultByte, "UTF-8");
-                map.put("status", "1");
+                map.put("status", CODE_SUCCESS);
                 map.put("msg", "解密成功");
                 map.put("data", userInfo);
             }else{
-                map.put("status", "0");
+                map.put("status", CODE_FAIL);
                 map.put("msg", "解密失败");
             }
         }catch (InvalidAlgorithmParameterException e) {

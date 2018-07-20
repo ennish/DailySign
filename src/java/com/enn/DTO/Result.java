@@ -48,10 +48,10 @@ public class Result<T>{
     }
 
     public Result(String code,String message,T body,Date time){
-        code=code;
-        message=message;
-        body=body;
-        time=time;
+        this.code=code;
+        this.message=message;
+        this.body=body;
+        this.time=time;
     }
     @Override
     public String toString() {

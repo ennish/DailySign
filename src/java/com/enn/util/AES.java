@@ -33,7 +33,7 @@ public class AES {
         initialize();
         try {
             Security.addProvider(new BouncyCastleProvider());
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS7Padding");
+            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             Key sKeySpec = new SecretKeySpec(keyByte, "AES");
 
             cipher.init(Cipher.DECRYPT_MODE, sKeySpec, generateIV(ivByte));

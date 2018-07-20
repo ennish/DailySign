@@ -1,9 +1,7 @@
 package com.enn.model;
 
 
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 
@@ -40,7 +38,7 @@ public class SignUser implements Serializable {
     /**
      * 积分账户
      */
-    private int account;
+    private Integer account;
     /**
      * 微信返回的sessionKey
      */
@@ -51,6 +49,9 @@ public class SignUser implements Serializable {
      */
     @Transient
     private String sessionId;
+    /**
+     * 上次登录时间
+     */
     @Transient
     private String lastLoginTime;
 
@@ -174,11 +175,11 @@ public class SignUser implements Serializable {
         this.lastLoginTime = lastLoginTime;
     }
 
-    public int getAccount() {
+    public Integer getAccount() {
         return account;
     }
 
-    public void setAccount(int account) {
+    public void setAccount(Integer account) {
         this.account = account;
     }
 }

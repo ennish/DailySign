@@ -22,10 +22,12 @@ public class SignUserServiceTest {
     public void testSelect(){
 
         SignUser user = new SignUser();
-        user.setOpenId("123345tw");
-        signUserService.addUser(user);
-        user = signUserService.getSignUserByOpenId(user);
-        Assert.assertEquals("123345tw",user.getSessionId());
+        user.setOpenId("ojVVo5PNaLBAE7glV9hWaEcltdHU");
+//        signUserService.addUser(user);
+//        user = signUserService.getSignUserByOpenId(user.getOpenId());
+//        Assert.assertEquals("123345tw",user.getSessionId());
+        SignUser user2 = signUserService.getUserAbstract(user.getOpenId());
+        System.out.println(user2.getAccount());
     }
 
     @Test

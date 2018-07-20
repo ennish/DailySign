@@ -25,6 +25,7 @@ public class SignUserTest {
         signUserMapper.insert(new SignUser("028owijfqef","sw"));
         List<SignUser> signUserList = signUserMapper.selectAll();
         Assert.assertEquals(2,signUserList.size());
+
     }
     @Test
     public void selectByName(){

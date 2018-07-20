@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns="http://www.springframework.org/schema/beans" xmlns:aop="http://www.springframework.org/schema/aop"
-       xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns="http://www.springframework.org/schema/beans"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-     http://www.springframework.org/schema/aop
-     http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
-     http://www.springframework.org/schema/context
-     http://www.springframework.org/schema/context/spring-context-4.0.xsd
      http://www.springframework.org/schema/tx
-     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
     <!--多属性文件时有以下有以下两种方式-->
     <!--1. 在每个context 设置 ignore-unresolvable="true" -->
     <!--<context:property-placeholder-->
@@ -45,9 +41,9 @@
     <!--</bean>-->
     <bean id="wxConfig" class="com.enn.DTO.InternalWxConfig">
         <property name="appid" value="${wechat.miniapp.appid}"/>
-        <property name="aesKey" value="${wechat.miniapp.aesKey}"/>
+        <!--<property name="aesKey" value="${wechat.miniapp.aesKey}"/>-->
         <property name="secret" value="${wechat.miniapp.secret}"/>
-        <property name="token" value="${wechat.miniapp.token}"/>
+        <!--<property name="token" value="${wechat.miniapp.token}"/>-->
         <property name="msgDataFormat" value="${wechat.miniapp.msgDataFormat}"/>
     </bean>
     <bean id="wxExtraService" class="com.enn.service.impl.WxExtraServiceImpl">
@@ -66,7 +62,7 @@
           <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
         <!--<property name="dataSource" ref="dataSource"/>-->
     <!--</bean>-->
-
+    <context:component-scan base-package="com.enn.service"></context:component-scan>
     <!-- 开启事务注解驱动 -->
     <tx:annotation-driven/>
     <!-- 配置事务特性 ，配置add、delete和update开始的方法(切面)，事务传播特性为required -->
@@ -109,9 +105,6 @@
         </property>
     </bean>
 
-    <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-        <property name="supportedMediaTypes" value="text/plain;charset=UTF-8"/>
-    </bean>
     <!--拦截器-->
     <!--<mvc:interceptors>-->
     <!--<mvc:interceptor>-->

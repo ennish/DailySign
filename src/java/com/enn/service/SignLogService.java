@@ -31,7 +31,24 @@ public interface SignLogService {
     /**
      * 用户签到
      * @param user 签到用户
-
      */
     Result addUserSign(SignUser user, Project project);
+
+    /**
+     *获取任务列表
+     *
+     */
+    Result getTaskList(int userId);
+
+    /**
+     *领取签到奖励
+     *
+     */
+    Result getTaskBonus(int taskId,int userId);
+
+    /**
+     * 获取本月签到记录
+     * @param userId 用户id
+     */
+    Result getSignRecord(int userId);
 }

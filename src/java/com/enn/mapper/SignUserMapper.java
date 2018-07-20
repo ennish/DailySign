@@ -1,6 +1,7 @@
 package com.enn.mapper;
 
 import com.enn.model.SignUser;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.Mapper;
@@ -25,4 +26,10 @@ public interface SignUserMapper extends Mapper<SignUser> {
      */
     @Select("select user_id,open_id,nick_name,gender,language,city,province,country,avatar_url,union_id,phone_no,account from sign_user where open_id = #{openId}")
     SignUser selectByOpenId(String openId);
+
+    /**
+     * 根据userid 获取用户基本信息
+     */
+    @Select("SELECT nick_name,avatar_url,account FROM sign_user where open_id = #{openId}")
+    SignUser selectUserInfo(@Param("openId")String openId);
 }
