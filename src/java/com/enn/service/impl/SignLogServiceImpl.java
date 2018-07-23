@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static com.enn.DTO.Result.DB_STATUS_ERROR;
 import static com.enn.DTO.TaskDTO.TaskStatus.ACCESSIBLE;
 import static com.enn.DTO.TaskDTO.TaskStatus.FINISH;
 import static com.enn.DTO.TaskDTO.TaskStatus.INACCESSIBLE;
@@ -113,23 +114,23 @@ public class SignLogServiceImpl implements SignLogService {
             log.setShareObj(openGId);
             Map innerMap2 = (Map) innerMap.get("watermark");
             //TODO 数据真实性校验
-            if (innerMap2.get(WxConstants.APPID_NAME).equals("此处填写自己的appid")) {
-
-            }
+//            if (!innerMap2.get(WxConstants.APPID_NAME).equals("此处校验自己的appid")) {
+//
+//            }
 
         } else {
             result.setCode(Result.STATUS_INVALID_REQUEST);
             result.setMessage("invalid data");
             return result;
         }
-
-        //目标群当天只能被同一用户分享一次,每个用户每天分享5次
-
-        if (userShareMapper.isObjShared(log) > 0 || userShareMapper.getShareNums(log.getShareUserId()) >= 5) {
+        Project project = projectService.getProjectActive();
+        //目标群当天只能被同一用户分享一次,每个用户每天分享次数达到要求，才能签到
+        if (userShareMapper.isObjShared(log) > 0 || userShareMapper.getShareNums(log.getShareUserId()) >= project.getShareTimesLimit()) {
             result.setCode(Result.STATUS_INVALID_REQUEST);
             result.setMessage("您已分享过该群,或您的分享次数已到达最大值");
             return result;
         }
+        //是否有签到记录，没有则新增一条
         if (signLogMapper.hasDaySignLog(log.getShareUserId()) <= 0) {
             SignLog slog = new SignLog();
             slog.setSlUserId(log.getShareUserId());
@@ -139,11 +140,12 @@ public class SignLogServiceImpl implements SignLogService {
                 return result;
             }
         }
-        Project project = projectService.getProjectActive();
 
+        //新增用户分享记录
         if (userShareMapper.userShare(log) > 0) {
             result.setMessage("分享成功");
         }
+        //如果满足签到条件，修改签到记录状态为可签到
         int nums = userShareMapper.getShareNums(log.getShareUserId());
         if (nums >= project.getShareTimesLimit()) {
             signLogMapper.updateUserSign(log);
@@ -166,7 +168,7 @@ public class SignLogServiceImpl implements SignLogService {
     public Result addUserSign(SignUser user, Project project) {
 
         Result result = signLogMapper.finishSign(user.getUserId(), project.getProjectId());
-        if ("500".equals(result.getCode())) {
+        if (DB_STATUS_ERROR.equals(result.getCode())) {
             result.setCode(Result.STATUS_INVALID_REQUEST);
         } else {
             result.setCode(Result.STATUS_COMPLETE);
@@ -182,13 +184,13 @@ public class SignLogServiceImpl implements SignLogService {
      */
 //    @Transactional
     @Override
-    public Result getTaskList(int userId) {
+    public Result initTaskList(int userId) {
         Result result = new Result();
 
         Example example = new Example(Task.class);
         example.orderBy("taskCycle");
         List<Task> listTask = taskMapper.selectByExample(example);
-        //获取用户任务完成状态
+        //获取用户任务完成记录
         List<TaskLog> listTaskLog = taskMapper.getTaskList(userId);
         List<TaskDTO> listDTO = new ArrayList<TaskDTO>();
         //获取用户当前周期连续签到天数

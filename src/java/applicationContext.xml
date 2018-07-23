@@ -2,10 +2,11 @@
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns="http://www.springframework.org/schema/beans"
        xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
      http://www.springframework.org/schema/tx
-     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+     http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
     <!--多属性文件时有以下有以下两种方式-->
     <!--1. 在每个context 设置 ignore-unresolvable="true" -->
     <!--<context:property-placeholder-->
@@ -58,31 +59,33 @@
     <!--<context:component-scan base-package="com.enn.service"/>-->
 
     <!-- 定义事务管理器 -->
-    <!--<bean id="transactionManager"-->
-          <!--class="org.springframework.jdbc.datasource.DataSourceTransactionManager">-->
-        <!--<property name="dataSource" ref="dataSource"/>-->
-    <!--</bean>-->
-    <context:component-scan base-package="com.enn.service"></context:component-scan>
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <context:component-scan base-package="com.enn.service">
+        <context:include-filter type="regex" expression="com.enn.service.WxExtraServiceImplxtraService"/>
+    </context:component-scan>
     <!-- 开启事务注解驱动 -->
     <tx:annotation-driven/>
     <!-- 配置事务特性 ，配置add、delete和update开始的方法(切面)，事务传播特性为required -->
-    <!--<tx:advice id="txAdvice" transaction-manager="transactionManager">-->
-        <!--<tx:attributes>-->
-            <!--<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>-->
-            <!--<tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>-->
-            <!--<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>-->
-            <!--<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>-->
-            <!--<tx:method name="init*" propagation="REQUIRED" rollback-for="Exception"/>-->
-            <!--<tx:method name="add*" propagation="REQUIRED"/>-->
-            <!--<tx:method name="*" read-only="true"/>-->
-        <!--</tx:attributes>-->
-    <!--</tx:advice>-->
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="init*" propagation="REQUIRED" rollback-for="Exception"/>
+            <tx:method name="add*" propagation="REQUIRED"/>
+            <tx:method name="*" read-only="true"/>
+        </tx:attributes>
+    </tx:advice>
 
     <!-- 配置那些类的方法进行事务管理 -->
-    <!--<aop:config>-->
-        <!--<aop:pointcut id="allManagerMethod" expression="execution (* com.enn.service..*.*(..))"/>-->
-        <!--<aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod"/>-->
-    <!--</aop:config>-->
+    <aop:config>
+        <aop:pointcut id="allManagerMethod" expression="execution (* com.enn.service..*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod"/>
+    </aop:config>
 
     <!--mybatis-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

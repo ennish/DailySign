@@ -38,7 +38,7 @@ public interface SignLogService {
      *获取任务列表
      *
      */
-    Result getTaskList(int userId);
+    Result initTaskList(int userId);
 
     /**
      *领取签到奖励

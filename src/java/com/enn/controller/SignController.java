@@ -44,26 +44,6 @@ public class SignController {
         return r.toString();
     }
 
-    /**
-     * 获取签到分享 进度
-     *
-     * @param sessionId sessionId
-     * @return
-     */
-    @RequestMapping(value = "shareInfo")
-    public String getShareInfo(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
-        Result r = new Result();
-        if (!jedisUtil.exists(sessionId)) {
-            r.setCode(Result.STATUS_INVALID_REQUEST);
-            r.setMessage("invalid sessionId");
-            return r.toString();
-        }
-        SignUser user = (SignUser) jedisUtil.get(sessionId);
-        if (user != null) {
-            r = signLogService.getUserShareList(user);
-        }
-        return r.toString();
-    }
 
     /**
      * 签到分享
@@ -120,7 +100,7 @@ public class SignController {
             return r.toString();
         }
         user = (SignUser) jedisUtil.get(sessionId);
-        r = signLogService.getTaskList(user.getUserId());
+        r = signLogService.initTaskList(user.getUserId());
         return r.toString();
     }
 

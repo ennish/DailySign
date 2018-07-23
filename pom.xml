@@ -221,7 +221,11 @@
             <artifactId>bcprov-jdk15</artifactId>
             <version>1.46</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>1.7.1</version>
+        </dependency>
         <!--jboss springMVC supporting-->
         <!--<dependency>-->
             <!--<groupId>org.jboss.snowdrop</groupId>-->
@@ -286,7 +290,7 @@
             </plugin>
             <plugin>
             <artifactId>maven-war-plugin</artifactId>
-            <version>3.2.0</version>
+            <version>2.5</version>
             </plugin>
             <plugin>
             <artifactId>maven-install-plugin</artifactId>

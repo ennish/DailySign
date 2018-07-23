@@ -10,7 +10,7 @@ import java.util.Date;
 public class Result<T>{
     /**
      *
-     * 状态码
+     * 前端通信状态码
      *
      * 默认为
      * 1200 : 状态已完成
@@ -22,6 +22,12 @@ public class Result<T>{
     public final static String STATUS_INVALID_REQUEST = "1400";
 
     public final static String STATUS_SERVER_ERROR = "1500";
+    /**
+     * 数据库procedure通信状态码
+     *
+     */
+    public final static String DB_STATUS_COMPLETE = "200";
+    public final static String DB_STATUS_ERROR = "500";
 
     /**
      * result code
