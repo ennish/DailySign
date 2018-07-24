@@ -1,6 +1,8 @@
 package com.enn.service.impl;
 
 import com.alibaba.druid.util.StringUtils;
+import com.enn.DTO.Result;
+import com.enn.core.ResultGenerator;
 import com.enn.mapper.SignUserMapper;
 import com.enn.model.SignUser;
 import com.enn.service.SignUserService;
@@ -74,4 +76,23 @@ public class SignUserServiceImpl implements SignUserService {
         }
         return user;
     }
+
+    /**
+     * 用户获取绑定账号验证码
+     * @param signUser
+     * @param phone 用户要绑定的账号
+     */
+    @Override
+    public Result updateUserBind(SignUser signUser,String phone){
+        if(signUserMapper.queryIfExits(signUser.getUserId())>0){
+            return ResultGenerator.generateFailResult("账号已绑定");
+        }
+        /**
+         * TODO 调用远程接口，判断账号是否为chainway会员，是则生成验证码，并发送用户
+         */
+
+        return ResultGenerator.generateSuccessResult();
+    }
+
+
 }

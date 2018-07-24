@@ -40,7 +40,7 @@
     <!--<bean id="wxMaService" class="cn.binarywang.wx.miniapp.api.impl.WxMaServiceImpl">-->
     <!--<property name="wxMaConfig" ref="wxMaConfig"/>-->
     <!--</bean>-->
-    <bean id="wxConfig" class="com.enn.DTO.InternalWxConfig">
+    <bean id="wxConfig" class="com.enn.core.InternalWxConfig">
         <property name="appid" value="${wechat.miniapp.appid}"/>
         <!--<property name="aesKey" value="${wechat.miniapp.aesKey}"/>-->
         <property name="secret" value="${wechat.miniapp.secret}"/>

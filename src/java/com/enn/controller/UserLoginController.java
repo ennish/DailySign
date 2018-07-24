@@ -109,10 +109,9 @@ public class UserLoginController {
      * 1.判断当前用户是否已绑定过，绑定过的不允许再绑定
      * 2.调用chainway接口，判断该号码是否为chainway会员
      * 3.若2返回结果为true，生成、记录并发送验证码
-     *
      */
     @RequestMapping(value = "getBindCode")
-    public String getAccountCode(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId,@RequestParam("phone") String phone) {
+    public String getAccountCode(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId, @RequestParam("phone") String phone) {
         Result r = new Result();
         SignUser user = new SignUser();
         if (!jedisUtil.exists(sessionId)) {
@@ -120,8 +119,9 @@ public class UserLoginController {
             r.setMessage("invalid sessionid");
             return r.toString();
         }
-
-        return ResultGenerator.generateSuccessResult("").toString();
+        jedisUtil.set(user.getUserId()+"-"+phone, UUID.randomUUID().toString()
+                , 60 * 10L);
+        return ResultGenerator.generateSuccessResult().toString();
     }
 
     /**
@@ -130,9 +130,22 @@ public class UserLoginController {
      * 2.绑定手机号。
      */
     @RequestMapping(value = "accountBind")
-    public String bindAccount(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId,@RequestParam("code")String code) {
-
-        return "";
+    public String bindAccount(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId,@RequestParam("phone")String phone, @RequestParam("code") String code) {
+        Result r = new Result();
+        if (!jedisUtil.exists(sessionId)) {
+            r.setCode(Result.STATUS_INVALID_REQUEST);
+            r.setMessage("invalid sessionid");
+            return r.toString();
+        }
+        SignUser user = (SignUser) jedisUtil.get(sessionId);
+        String tempCode = jedisUtil.get(user.getUserId()+"-"+phone).toString();
+        if (tempCode==null||code.equals(tempCode)) {
+            r.setCode(Result.STATUS_INVALID_REQUEST);
+            r.setMessage("invalid code");
+            return r.toString();
+        }
+        r = signUserService.updateUserBind(user,phone);
+        return r.toString();
     }
 
 }

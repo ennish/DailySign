@@ -36,10 +36,41 @@ public class ResultGenerator {
     }
 
     public static Result generateFailResult(String message){
-        return new Result().setCode(Result.STATUS_SERVER_ERROR).setMessage(STATUS_INVALID_REQUEST);
+        return new Result().setCode(Result.STATUS_INVALID_REQUEST).setMessage(STATUS_INVALID_REQUEST);
     }
 
     public static Result generateFailInvalidRequest(){
         return new Result().setCode(Result.STATUS_INVALID_REQUEST).setMessage(STATUS_INVALID_REQUEST);
+    }
+
+    /**
+     * @author tw
+     * 读取微信配置
+     */
+    public static interface WxConfig {
+
+         String getAppid();
+
+         void setAppid(String appid);
+
+         String getSecret();
+
+         void setSecret(String secret);
+
+         String getToken();
+
+         void setToken(String token);
+
+         String getMsgData();
+
+         void setMsgData(String msgData);
+
+         String getAesKey();
+
+         void setAesKey(String aesKey);
+
+         String getMsgDataFormat();
+
+         void setMsgDataFormat(String msgDataFormat);
     }
 }

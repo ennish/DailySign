@@ -53,6 +53,7 @@ public class ClientExecutor {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
         String baseUrl = "http://localhost:8888/country/test/rest";
+        String baseUrl2 = "http://localhost:8083/ChainWayInsurance/rest/userservice/queryIfExists";
         ClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.postForObject(baseUrl,"",String.class);

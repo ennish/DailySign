@@ -1,6 +1,5 @@
 package com.enn.service;
 
-import com.enn.DTO.WxConfig;
 import com.enn.DTO.WxSessionData;
 
 import java.util.Map;

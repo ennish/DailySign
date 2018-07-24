@@ -1,10 +1,10 @@
-package com.enn.DTO;
+package com.enn.core;
 
 /**
  * @author tw
  * 读取微信配置
  */
-public class InternalWxConfig implements WxConfig{
+public class InternalWxConfig implements ResultGenerator.WxConfig {
 
     private String appid;
     private String secret;

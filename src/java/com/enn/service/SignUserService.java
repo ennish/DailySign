@@ -1,5 +1,6 @@
 package com.enn.service;
 
+import com.enn.DTO.Result;
 import com.enn.model.SignUser;
 
 /**
@@ -35,4 +36,12 @@ public interface SignUserService {
      * 获取用户简略信息
      */
     SignUser getUserAbstract(String openId);
+
+    /**
+     * 获取账户绑定验证码
+     * @param signUser
+     * @param phone
+     * @return
+     */
+    Result updateUserBind(SignUser signUser, String phone);
 }

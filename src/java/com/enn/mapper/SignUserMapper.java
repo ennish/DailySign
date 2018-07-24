@@ -4,6 +4,7 @@ import com.enn.model.SignUser;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Result;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import tk.mybatis.mapper.common.Mapper;
 
 /**
@@ -39,4 +40,11 @@ public interface SignUserMapper extends Mapper<SignUser> {
      */
     @Select("SELECT count(1) from sign_user WHERE  user_id={#userId} and ex_account is null")
     int queryIfExits(@Param("userId")int userId);
+
+    /**
+     * 用户绑定账号
+     *
+     */
+    @Update("UPDATE sign_user SET ex_account = #{phone} WHERE userId = #{userId}")
+    int updateSignUser(int userId,String phone);
 }

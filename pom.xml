@@ -226,12 +226,19 @@
             <artifactId>aspectjweaver</artifactId>
             <version>1.7.1</version>
         </dependency>
-        <!--jboss springMVC supporting-->
+        <!--jboss springMVC supporting 在jboss as7中 没要这个也ok-->
         <!--<dependency>-->
             <!--<groupId>org.jboss.snowdrop</groupId>-->
             <!--<artifactId>snowdrop-vfs</artifactId>-->
             <!--<version>4.0.0.Final</version>-->
         <!--</dependency>-->
+        <!-- https://mvnrepository.com/artifact/net.sf.json-lib/json-lib -->
+
+        <dependency>
+            <groupId>net.sf.json-lib</groupId>
+            <artifactId>json-lib</artifactId>
+            <version>2.4</version>
+        </dependency>
 
     </dependencies>
     <repositories>
