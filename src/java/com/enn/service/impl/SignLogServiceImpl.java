@@ -186,7 +186,6 @@ public class SignLogServiceImpl implements SignLogService {
     @Override
     public Result initTaskList(int userId) {
         Result result = new Result();
-
         Example example = new Example(Task.class);
         example.orderBy("taskCycle");
         List<Task> listTask = taskMapper.selectByExample(example);
@@ -249,8 +248,10 @@ public class SignLogServiceImpl implements SignLogService {
      */
     @Override
     public Result getSignRecord(int userId) {
-
-        return null;
+        Result result = new Result();
+        List<String> listDate = signLogMapper.getSignRecord(userId);
+        result.setBody(listDate);
+        return result;
     }
 
 }

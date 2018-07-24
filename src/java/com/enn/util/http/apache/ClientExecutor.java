@@ -1,6 +1,7 @@
 package com.enn.util.http.apache;
 
 
+import ch.qos.logback.core.net.SyslogOutputStream;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
@@ -11,8 +12,13 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-
+import org.springframework.http.HttpMethod;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.web.client.RestTemplate;
+import java.net.URI;
 import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * @author apache
@@ -43,6 +49,14 @@ public class ClientExecutor {
         } finally {
             httpGet.releaseConnection();
         }
+    }
+
+    public static void main(String[] args) throws URISyntaxException, IOException {
+        String baseUrl = "http://localhost:8888/country/test/rest";
+        ClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
+        RestTemplate restTemplate = new RestTemplate();
+        String result = restTemplate.postForObject(baseUrl,"",String.class);
+        System.out.println(result);
     }
 }
 

@@ -32,4 +32,11 @@ public interface SignUserMapper extends Mapper<SignUser> {
      */
     @Select("SELECT nick_name,avatar_url,account FROM sign_user where open_id = #{openId}")
     SignUser selectUserInfo(@Param("openId")String openId);
+
+    /**
+     * 判断用户是否绑定账号。
+     *
+     */
+    @Select("SELECT count(1) from sign_user WHERE  user_id={#userId} and ex_account is null")
+    int queryIfExits(@Param("userId")int userId);
 }

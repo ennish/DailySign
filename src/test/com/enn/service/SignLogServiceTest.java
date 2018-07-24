@@ -18,6 +18,7 @@ public class SignLogServiceTest {
     @Resource
     SignLogService signLogServiceService;
 
+
     @Test
     public void testSelect(){
         Result result = signLogServiceService.initTaskList(1);
@@ -33,5 +34,11 @@ public class SignLogServiceTest {
         Result result = signLogServiceService.initTaskList(72);
         System.out.println(result.toString());
 
+    }
+
+    @Test
+    public void testGetSignRecord(){
+        Result result = signLogServiceService.getSignRecord(72);
+        System.out.println(result.toString());
     }
 }

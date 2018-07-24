@@ -68,31 +68,34 @@ public class Result<T>{
         return code;
     }
 
-    public void setCode(String code) {
+    public Result<T> setCode(String code) {
         this.code = code;
+        return this;
     }
 
     public String getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public Result<T> setMessage(String message) {
         this.message = message;
+        return this;
     }
 
     public T getBody() {
         return body;
     }
 
-    public void setBody(T body) {
-        this.body = body;
+    public Result<T> setBody(T body) {
+        this.body = body;return this;
     }
 
     public Date getTime() {
         return time;
     }
 
-    public void setTime(Date time) {
+    public Result<T> setTime(Date time) {
         this.time = time;
+        return this;
     }
 }

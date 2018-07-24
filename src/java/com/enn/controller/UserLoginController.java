@@ -2,6 +2,7 @@ package com.enn.controller;
 
 import com.enn.DTO.Result;
 import com.enn.DTO.WxSessionData;
+import com.enn.core.ResultGenerator;
 import com.enn.model.SignUser;
 import com.enn.service.SignUserService;
 import com.enn.service.WxExtraService;
@@ -29,7 +30,6 @@ public class UserLoginController {
     /**
      * 微信登录
      * 登录前应用checkSession检验，session的有效性
-     *
      *
      * @param code
      * @return
@@ -89,7 +89,7 @@ public class UserLoginController {
      * 获取个人相关信息
      * 当前积分 etc
      */
-    @RequestMapping(value = "detail ")
+    @RequestMapping(value = "detail")
     public String getUserInfo(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
         Result r = new Result();
         SignUser user = new SignUser();
@@ -103,4 +103,36 @@ public class UserLoginController {
         r.setBody(user);
         return r.toString();
     }
+
+    /**
+     * 用户获取账户绑定验证码。
+     * 1.判断当前用户是否已绑定过，绑定过的不允许再绑定
+     * 2.调用chainway接口，判断该号码是否为chainway会员
+     * 3.若2返回结果为true，生成、记录并发送验证码
+     *
+     */
+    @RequestMapping(value = "getBindCode")
+    public String getAccountCode(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId,@RequestParam("phone") String phone) {
+        Result r = new Result();
+        SignUser user = new SignUser();
+        if (!jedisUtil.exists(sessionId)) {
+            r.setCode(Result.STATUS_INVALID_REQUEST);
+            r.setMessage("invalid sessionid");
+            return r.toString();
+        }
+
+        return ResultGenerator.generateSuccessResult("").toString();
+    }
+
+    /**
+     * 绑定用户手机号。
+     * 1.验证code的有效性（a.是否有对应phone。b.时效性。）
+     * 2.绑定手机号。
+     */
+    @RequestMapping(value = "accountBind")
+    public String bindAccount(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId,@RequestParam("code")String code) {
+
+        return "";
+    }
+
 }

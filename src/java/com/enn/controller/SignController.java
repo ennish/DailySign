@@ -124,7 +124,7 @@ public class SignController {
      * 获取用户本月签到记录
      */
     @RequestMapping(value = "taskRecord")
-    public String getSignRecord(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId, @RequestParam("taskId") int taskId) {
+    public String getSignRecord(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
         Result r = new Result();
         if (!jedisUtil.exists(sessionId)) {
             r.setCode(Result.STATUS_INVALID_REQUEST);
@@ -132,7 +132,7 @@ public class SignController {
             return r.toString();
         }
         SignUser user = (SignUser) jedisUtil.get(sessionId);
-        r = signLogService.getTaskBonus(taskId,user.getUserId());
+        r = signLogService.getSignRecord(user.getUserId());
         return r.toString();
     }
 

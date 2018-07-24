@@ -55,6 +55,8 @@ public class SignUser implements Serializable {
     @Transient
     private String lastLoginTime;
 
+    private String exAccount;
+
     public SignUser() {
     }
 
@@ -181,5 +183,13 @@ public class SignUser implements Serializable {
 
     public void setAccount(Integer account) {
         this.account = account;
+    }
+
+    public String getExAccount() {
+        return exAccount;
+    }
+
+    public void setExAccount(String exAccount) {
+        this.exAccount = exAccount;
     }
 }
