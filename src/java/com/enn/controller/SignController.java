@@ -1,6 +1,7 @@
 package com.enn.controller;
 
 import com.enn.DTO.Result;
+import com.enn.core.ResultGenerator;
 import com.enn.model.*;
 import com.enn.service.ProjectService;
 import com.enn.service.SignLogService;
@@ -28,18 +29,15 @@ public class SignController {
 
     /**
      * 获取用户签到信息
-     *  用户签到状态及用户分享信息
+     * 用户签到状态及用户分享信息
      */
     @RequestMapping(value = "info")
     public String getSignInfo(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
         Result r = new Result();
-        if (!jedisUtil.exists(sessionId)) {
-            r.setCode(Result.STATUS_INVALID_REQUEST);
-            r.setMessage("session无效");
-            return r.toString();
+        SignUser user = (SignUser) jedisUtil.get(sessionId);
+        if (user == null || user.getUserId() <= 0) {
+           return ResultGenerator.generateFailResult("该用户不存在").toString();
         }
-        SignUser user = new SignUser();
-        user = (SignUser) jedisUtil.get(sessionId);
         r = signLogService.getUserSignInfo(user);
         return r.toString();
     }
@@ -51,19 +49,12 @@ public class SignController {
      * @param data 微信群敏感数据
      * @param iv   加密向量
      */
-    @RequestMapping(value="share")
+    @RequestMapping(value = "share")
     public String userShare(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId, @RequestParam("encryptedData") String data, @RequestParam("iv") String iv) {
-        Result r = new Result();
-        SignUser user = new SignUser();
-        if (!jedisUtil.exists(sessionId)) {
-            r.setCode(Result.STATUS_INVALID_REQUEST);
-            r.setMessage("invalid sessionId");
-            return r.toString();
-        }
-        user = (SignUser) jedisUtil.get(sessionId);
+        SignUser user = (SignUser) jedisUtil.get(sessionId);
         UserShareLog log = new UserShareLog();
         log.setShareUserId(user.getUserId());
-        r = signLogService.addUserShare(log, data, iv, user);
+        Result r = signLogService.addUserShare(log, data, iv, user);
         return r.toString();
     }
 
@@ -75,32 +66,22 @@ public class SignController {
      */
     @RequestMapping(value = "signIn")
     public String signIn(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
-        Result r = new Result();
-        if (!jedisUtil.exists(sessionId)) {
-            r.setCode(Result.STATUS_INVALID_REQUEST);
-            r.setMessage("invalid sessionId");
-            return r.toString();
-        }
-        SignUser user  = (SignUser) jedisUtil.get(sessionId);
+        SignUser user = (SignUser) jedisUtil.get(sessionId);
         Project project = projectService.getProjectActive();
-        r = signLogService.addUserSign(user, project);
+        Result r = signLogService.addUserSign(user, project);
         return r.toString();
     }
 
     /**
      * 获取签到任务进度
      */
-    @RequestMapping(value="tasks")
+    @RequestMapping(value = "tasks")
     public String getSignTaskList(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
-        Result r = new Result();
-        SignUser user = new SignUser();
-        if (!jedisUtil.exists(sessionId)) {
-            r.setCode(Result.STATUS_INVALID_REQUEST);
-            r.setMessage("invalid sessionId");
-            return r.toString();
+        SignUser user = (SignUser) jedisUtil.get(sessionId);
+        if (user == null || user.getUserId() <= 0) {
+
         }
-        user = (SignUser) jedisUtil.get(sessionId);
-        r = signLogService.initTaskList(user.getUserId());
+        Result r = signLogService.initTaskList(user.getUserId());
         return r.toString();
     }
 
@@ -109,14 +90,9 @@ public class SignController {
      */
     @RequestMapping(value = "taskBonus")
     public String getTaskBonus(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId, @RequestParam("taskId") int taskId) {
-        Result r = new Result();
-        if (!jedisUtil.exists(sessionId)) {
-            r.setCode(Result.STATUS_INVALID_REQUEST);
-            r.setMessage("invalid sessionId");
-            return r.toString();
-        }
-        SignUser  user = (SignUser) jedisUtil.get(sessionId);
-        r = signLogService.getTaskBonus(taskId,user.getUserId());
+
+        SignUser user = (SignUser) jedisUtil.get(sessionId);
+        Result r = signLogService.getTaskBonus(taskId, user.getUserId());
         return r.toString();
     }
 
@@ -125,14 +101,8 @@ public class SignController {
      */
     @RequestMapping(value = "taskRecord")
     public String getSignRecord(@RequestParam(ConstantUtil.SESSION_ID_NAME) String sessionId) {
-        Result r = new Result();
-        if (!jedisUtil.exists(sessionId)) {
-            r.setCode(Result.STATUS_INVALID_REQUEST);
-            r.setMessage("invalid sessionId");
-            return r.toString();
-        }
         SignUser user = (SignUser) jedisUtil.get(sessionId);
-        r = signLogService.getSignRecord(user.getUserId());
+        Result r = signLogService.getSignRecord(user.getUserId());
         return r.toString();
     }
 

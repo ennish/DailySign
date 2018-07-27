@@ -1,7 +1,6 @@
 package com.enn.util.http.apache;
 
 
-import ch.qos.logback.core.net.SyslogOutputStream;
 import org.apache.http.Consts;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
@@ -12,11 +11,9 @@ import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.client.ClientHttpRequestFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
-import java.net.URI;
 import java.io.IOException;
 import java.net.URISyntaxException;
 
@@ -53,10 +50,10 @@ public class ClientExecutor {
 
     public static void main(String[] args) throws URISyntaxException, IOException {
         String baseUrl = "http://localhost:8888/country/test/rest";
-        String baseUrl2 = "http://localhost:8083/ChainWayInsurance/rest/userservice/queryIfExists";
+        String baseUrl2 = "http://192.9.200.98:8083/ChainWayInsurance/rest/userservice/queryIfExists";
         ClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
         RestTemplate restTemplate = new RestTemplate();
-        String result = restTemplate.postForObject(baseUrl,"",String.class);
+        String result = restTemplate.postForObject(baseUrl2,"",String.class);
         System.out.println(result);
     }
 }

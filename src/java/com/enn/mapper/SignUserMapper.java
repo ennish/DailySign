@@ -38,13 +38,13 @@ public interface SignUserMapper extends Mapper<SignUser> {
      * 判断用户是否绑定账号。
      *
      */
-    @Select("SELECT count(1) from sign_user WHERE  user_id={#userId} and ex_account is null")
+    @Select("SELECT count(1) from sign_user WHERE  user_id=#{userId} and ex_account is not null")
     int queryIfExits(@Param("userId")int userId);
 
     /**
      * 用户绑定账号
      *
      */
-    @Update("UPDATE sign_user SET ex_account = #{phone} WHERE userId = #{userId}")
-    int updateSignUser(int userId,String phone);
+    @Update("UPDATE sign_user SET ex_account = #{phone} WHERE user_Id = #{userId}")
+    int updateSignUser(@Param("userId")int userId,@Param("phone")String phone);
 }

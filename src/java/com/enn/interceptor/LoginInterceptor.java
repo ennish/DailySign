@@ -43,8 +43,7 @@ public class LoginInterceptor implements HandlerInterceptor {
              * 用户已登录,更新缓存
              */
             SignUser user = (SignUser) jedisUtil.get(sessionId);
-            user.setLastLoginTime(new Date().toString());
-            jedisUtil.set(sessionId,user);
+            jedisUtil.set(user.getSessionId(), user, ConstantUtil.SESSION_EXPIRE_SECONDS);
             return true;
         }
         return false;

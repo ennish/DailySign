@@ -9,6 +9,7 @@ import java.security.Key;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.Security;
+import java.security.spec.InvalidParameterSpecException;
 
 
 import javax.crypto.BadPaddingException;
@@ -29,7 +30,7 @@ public class AES {
      * @throws InvalidAlgorithmParameterException
      * @throws NoSuchProviderException
      */
-    public static byte[] decrypt(byte[] content, byte[] keyByte, byte[] ivByte) throws InvalidAlgorithmParameterException {
+    public static byte[] decrypt(byte[] content, byte[] keyByte, byte[] ivByte)  {
         initialize();
         try {
             Security.addProvider(new BouncyCastleProvider());
@@ -49,11 +50,9 @@ public class AES {
             e.printStackTrace();
         } catch (BadPaddingException e) {
             e.printStackTrace();
-        } catch (NoSuchProviderException e) {
-            // TODO Auto-generated catch block
+        } catch (InvalidAlgorithmParameterException e) {
             e.printStackTrace();
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
+        } catch (InvalidParameterSpecException e) {
             e.printStackTrace();
         }
         return null;
@@ -67,7 +66,7 @@ public class AES {
         initialized = true;
     }
     //生成iv
-    public static AlgorithmParameters generateIV(byte[] iv) throws Exception{
+    public static AlgorithmParameters generateIV(byte[] iv) throws InvalidParameterSpecException, NoSuchAlgorithmException {
         AlgorithmParameters params = AlgorithmParameters.getInstance("AES");
         params.init(new IvParameterSpec(iv));
         return params;

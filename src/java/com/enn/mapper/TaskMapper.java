@@ -17,8 +17,7 @@ public interface TaskMapper extends Mapper<Task> {
 
     /**
      * 获取用户签到进度
-     * taskId taskName taskSignNum
-     * @Param userId 用户id
+     * @param userId 用户id
      * @return 任务记录
      */
     @Select("select * from task_log where task_user_id = #{userId} and TO_DAYS(task_time)=TO_DAYS(NOW()) order by task_log_id")
@@ -26,8 +25,8 @@ public interface TaskMapper extends Mapper<Task> {
     /**
      *
      * 用户领取任务奖励
-     * @Param taskId 任务Id
-     * @Param userId 用户Id
+     * @param taskId 任务Id
+     * @param userId 用户Id
      * @return 领取是否成功
      *
      */

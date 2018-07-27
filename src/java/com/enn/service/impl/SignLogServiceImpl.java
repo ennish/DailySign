@@ -46,7 +46,9 @@ public class SignLogServiceImpl implements SignLogService {
      * @param user
      * @return
      */
+
     @Override
+    @Transactional
     public Result getUserSignInfo(SignUser user) {
         Result result = new Result();
         SignLogDTO signLogDTO = new SignLogDTO();
@@ -76,6 +78,7 @@ public class SignLogServiceImpl implements SignLogService {
      * @return
      */
     @Override
+    @Transactional
     public Result getUserShareList(SignUser user) {
         Result result = new Result();
         List<UserShareLog> shareLogs = userShareMapper.getShareLogsByUser(user);
@@ -101,6 +104,7 @@ public class SignLogServiceImpl implements SignLogService {
      */
 //    @Transactional
     @Override
+    @Transactional
     public Result addUserShare(UserShareLog log, String data, String iv, SignUser user) {
         Result result = new Result();
         /**
@@ -155,7 +159,6 @@ public class SignLogServiceImpl implements SignLogService {
 
     /**
      * 用户签到
-     * TODO
      * 更改状态
      * 奖励分配
      * 记录流水
@@ -165,6 +168,7 @@ public class SignLogServiceImpl implements SignLogService {
      * @return 签到结果
      */
     @Override
+    @Transactional
     public Result addUserSign(SignUser user, Project project) {
 
         Result result = signLogMapper.finishSign(user.getUserId(), project.getProjectId());
@@ -184,6 +188,7 @@ public class SignLogServiceImpl implements SignLogService {
      */
 //    @Transactional
     @Override
+    @Transactional
     public Result initTaskList(int userId) {
         Result result = new Result();
         Example example = new Example(Task.class);
@@ -233,6 +238,7 @@ public class SignLogServiceImpl implements SignLogService {
      */
 //    @Transactional
     @Override
+    @Transactional
     public Result getTaskBonus(int taskId, int userId) {
         Result result = taskMapper.getTaskBonus(taskId, userId);
         if (Result.STATUS_COMPLETE.equals(result.getCode())) {

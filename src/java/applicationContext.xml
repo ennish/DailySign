@@ -76,7 +76,6 @@
             <tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
             <tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
             <tx:method name="init*" propagation="REQUIRED" rollback-for="Exception"/>
-            <tx:method name="add*" propagation="REQUIRED"/>
             <tx:method name="*" read-only="true"/>
         </tx:attributes>
     </tx:advice>
@@ -107,13 +106,4 @@
             </value>
         </property>
     </bean>
-
-    <!--拦截器-->
-    <!--<mvc:interceptors>-->
-    <!--<mvc:interceptor>-->
-    <!--<mvc:mapping path="/**"/>-->
-    <!--<mvc:exclude-mapping path="/user/login"/>-->
-    <!--<bean class="com.enn.interceptor.LoginInterceptor"/>-->
-    <!--</mvc:interceptor>-->
-    <!--</mvc:interceptors>-->
 </beans>

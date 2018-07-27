@@ -11,7 +11,7 @@
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <bean class="org.springframework.http.converter.StringHttpMessageConverter">
-                <property name="supportedMediaTypes" value = "text/plain;charset=UTF-8" />
+                <property name="supportedMediaTypes" value="text/plain;charset=UTF-8"/>
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
@@ -20,5 +20,12 @@
 
     <!--映射静态资源-->
     <mvc:default-servlet-handler/>
-
+    <!-- 拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <mvc:exclude-mapping path="/user/login"/>
+            <bean class="com.enn.interceptor.LoginInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
 </beans>

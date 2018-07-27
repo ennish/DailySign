@@ -2,7 +2,7 @@ package com.enn.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.enn.DTO.WxSessionData;
-import com.enn.core.ResultGenerator;
+import com.enn.core.WxConfig;
 import com.enn.service.WxExtraService;
 import com.enn.util.EncryptUtil;
 import com.enn.util.http.apache.ClientExecutor;
@@ -20,7 +20,7 @@ import java.util.Map;
 @Service
 public class WxExtraServiceImpl implements WxExtraService {
     @Autowired
-    private ResultGenerator.WxConfig wxConfig;
+    private WxConfig wxConfig;
 
     @Override
     public Map<String, String> getResData(String sessionKey, String encryptData, String iv) {
@@ -30,7 +30,7 @@ public class WxExtraServiceImpl implements WxExtraService {
 
     @Override
     public WxSessionData requestData(String jsCode) {
-        final ResultGenerator.WxConfig config = getWxConfig();
+       WxConfig config = getWxConfig();
         Map<String, String> params = new HashMap<String, String>(8);
         params.put("appid", config.getAppid());
         params.put("secret", config.getSecret());
@@ -53,11 +53,11 @@ public class WxExtraServiceImpl implements WxExtraService {
         return data;
     }
 
-    public ResultGenerator.WxConfig getWxConfig() {
+    public  WxConfig getWxConfig() {
         return this.wxConfig;
     }
 
-    public void setWxConfig(ResultGenerator.WxConfig wxMaConfig) {
+    public void setWxConfig(WxConfig wxMaConfig) {
         this.wxConfig = wxConfig;
     }
 }

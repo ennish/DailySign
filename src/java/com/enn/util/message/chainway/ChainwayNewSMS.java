@@ -3,6 +3,7 @@ package com.enn.util.message.chainway;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
 import com.google.common.base.Charsets;
@@ -15,6 +16,10 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 
+/**
+ * @author hacker
+ * 修改自chainway
+ */
 public class ChainwayNewSMS {
     /**
      * 登录账号
@@ -25,61 +30,50 @@ public class ChainwayNewSMS {
      * 登录密码
      ***/
     private static final String OperPass = "cwzn";
-
     /**
      * 内容类型
      ****/
     private static final String ContentType = "15";
 
-    /*****/
     private static final String SendTime = "";
 
-    /**********/
     private static final String ValidTime = "";
 
-    /*******/
     private static final String AppendID = "";
 
+    /**
+     * 企业ID，参数值为服务商提供的API KEY；
+     */
+    private static final String KEY = "E6FB9A73EFA74583E17969A6E3D45F5D";
 
-    private static final String KEY = ""; //企业ID，参数值为服务商提供的API KEY；
-
-    //这个是http的,端口88
-    private static final String Send_URL = ""; //接口地址
+    /**
+     * 这个是http的,端口88
+     */
+    private static final String SEND_URL = "http://data.chainwayits.cn:88/service/sms/action/send";
 
     /**
      * 发送短信
-     ***/
-    public static boolean sendSms(String mobile, String content) {
-        try {
+     **/
+    public static boolean sendSms(String mobile, String content) throws UnsupportedEncodingException {
             /* 将内容用URLEncoder编一次GBK */
-//			String EncoderContent = URLEncoder.encode(content, "GBK");
-            String EncoderContent = URLEncoder.encode(content, "UTF-8");  //GBK短信内容乱码
-            String queryString = "key=" + KEY + "&phone=" + mobile + "&content=" + EncoderContent;
+            String encoderContent = URLEncoder.encode(content, "UTF-8");
+            String queryString = "key=" + KEY + "&phone=" + mobile + "&content=" + encoderContent;
             System.out.println(queryString);
-            String jsonStr = getStringByHttps(Send_URL + "?" + queryString);
+            String jsonStr = getStringByHttps(SEND_URL + "?" + queryString);
             System.out.println("send sms resutl ==: " + jsonStr + "   " + queryString);
             if (StringUtils.isNotEmpty(jsonStr)) {
-                JSONObject josnJsonObject = JSONObject.fromObject(jsonStr); //string 转jsonn
-                Integer code = Integer.parseInt(josnJsonObject.getString("error")); //JSONObject 转String  再转int
+                JSONObject josnJsonObject = JSONObject.fromObject(jsonStr);
+                Integer code = Integer.parseInt(josnJsonObject.getString("error"));
                 System.out.println(code);
                 return getResult(code);
             }
             return false;
-        } catch (Exception e) {
-            System.out.println("send sms error --- mobile:" + mobile + " \tcontent:" + content);
-            e.printStackTrace();
-            return false;
-        }
-
     }
 
     /**
-     * /**
      *
-     * @param url
-     * @return
      */
-    public static String getStringByHttps(String url) {
+     private static String getStringByHttps(String url) {
         String result = "";
         CloseableHttpClient httpclient = HttpClients.custom().build();
 
@@ -101,7 +95,7 @@ public class ChainwayNewSMS {
         switch (code) {
             case 0: {
                 flag = true;
-                System.out.println("操作成功");
+                System.out.println("发送成功");
                 break;
             }
             case 100001: {
@@ -109,7 +103,6 @@ public class ChainwayNewSMS {
                 break;
             }
             case 100002: {
-                flag = true;
                 System.out.println("请求地址不匹配");
                 break;
             }
@@ -129,14 +122,14 @@ public class ChainwayNewSMS {
                 System.out.println("服务器异常");
                 break;
             }
-            default :
+            default:
                 System.out.println("未知错误");
                 break;
         }
         return flag;
     }
 
-    public static void main(String[] args) {
-//        ChainwayNewSMS.sendSms("15727644231", "测试短信test的验证码是 ：123145");
+    public static void main(String[] args) throws UnsupportedEncodingException {
+        ChainwayNewSMS.sendSms("15727644231", "测试短信test的验证码是 ：123145");
     }
 }

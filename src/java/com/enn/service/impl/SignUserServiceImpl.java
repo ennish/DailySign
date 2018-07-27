@@ -87,12 +87,11 @@ public class SignUserServiceImpl implements SignUserService {
         if(signUserMapper.queryIfExits(signUser.getUserId())>0){
             return ResultGenerator.generateFailResult("账号已绑定");
         }
-        /**
-         * TODO 调用远程接口，判断账号是否为chainway会员，是则生成验证码，并发送用户
-         */
+        if(signUserMapper.updateSignUser(signUser.getUserId(),phone)<=0){
 
-        return ResultGenerator.generateSuccessResult();
+            return ResultGenerator.generateFailResult();
+        }
+        return ResultGenerator.generateSuccessResult().setBody(phone);
     }
-
 
 }
